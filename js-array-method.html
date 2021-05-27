@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <p id="demo"></p>
+    <p id="demo1"></p>
+    <p id="demo2"></p>
+    <p id="demo3"></p>
+    <!-- Chuyển mảng thành chuỗi (join() tương tự nhưng thêm phân cách chỉ định) -->
+    <script>
+        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+        document.getElementById("demo").innerHTML = fruits.toString();
+    </script>
+    <!-- Loại bỏ yếu tố cuối cùng -->
+    <script>
+        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+        document.getElementById("demo1").innerHTML = fruits;
+        fruits.pop();
+        document.getElementById("demo2").innerHTML = fruits;
+    </script>
+    <!-- Thêm yếu tố mới ở cuối cùng -->
+    <script>
+        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+        document.getElementById("demo3").innerHTML = fruits;
+
+        function myFunction() {
+            fruits.push("Kiwi");
+            document.getElementById("demo").innerHTML = fruits;
+        }
+    </script>
+</body>
+
+</html>

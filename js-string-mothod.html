@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <p id="demo1"></p>
+    <p id="demo2"></p>
+    <p id="demo3"></p>
+    <p id="demo4"></p>
+    
+    <button onclick="myFunction()">Try it</button>
+    <p id="demo5">Nguyễn Quang Huy</p>
+    <!-- chiều dài chuỗi -->
+    <script>
+        var txt = "Nguyễn Quang Huy";
+        var sln = txt.length;
+        document.getElementById("demo1").innerHTML = sln;
+    </script>
+    <!-- lấy giá trị vị trí -->
+    <script>
+        var str = "Nguyễn Quang Huy";
+        var pos = str.indexOf("Quang");
+        document.getElementById("demo2").innerHTML = pos;
+    </script>
+    <script>
+        var str = "Nguyễn Quang Huy";
+        var pos = str.indexOf("Quang");
+        document.getElementById("demo3", 10).innerHTML = pos;
+    </script>
+    <!-- trích xuất chuối con -->
+    <script>
+        var str = "Apple, Banana, Kiwi";
+        var res = str.slice(7, 13);
+        document.getElementById("demo4").innerHTML = res;
+    </script>
+    
+<script>
+    function myFunction() {
+      var str = document.getElementById("demo5").innerHTML; 
+      var txt = str.replace("Huy","Quang");
+      document.getElementById("demo5").innerHTML = txt;
+    }
+    </script>
+</body>
+
+</html>
