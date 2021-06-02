@@ -8,25 +8,86 @@
 <body>
     <form style="background-color: rgb(208, 211, 211); border: 2px solid black; width: 15%; margin: auto; ">
         <label>Họ và tên </label><br>
-        <input type="text" name="name"><br>
+        <input type="text" name="name" id="name" required><br>
         <label>Địa chỉ </label><br>
-        <input type="text" name="address"><br>
+        <input type="text" name="address" id="address" required><br>
         <label>Số điện thoại</label><br>
-        <input type="text" name="phoneNumber"><br>
+        <input type="text" name="phoneNumber" id="phoneNumber" pattern="[0-9]{10}" required><br>
         <label>Tên lớp</label><br>
-        <input type="text" name="className"><br>
-        <input type="button" value="Submit">
+        <input type="text" name="className" id="className" required><br>
+        <button type="button" onclick="addInfo()">Submit</button>
     </form>
-    <input type="button" value="Delete">
+    <button type="button" onclick="deleteInfo()">Delete</button>
+    <button type="button" onclick="resetInfo()">Reset</button>
     <table id="table">
-        <tr>
-            <th></th>
-            <th>Họ và tên</th>
-            <th>Địa chỉ</th>
-            <th>Số điện thoại</th>
-            <th>Tên lớp</th>
-        </tr>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Họ và tên</th>
+                <th>Địa chỉ</th>
+                <th>Số điện thoại</th>
+                <th>Tên lớp</th>
+            </tr>
+        </thead>
+        <tbody id="output"></tbody>
     </table>
+    <script>
+        var count = 0;
+        function addInfo() {
+            count += 1;
+            var list = [];
+            var name = document.getElementById("name").value;
+            var address = document.getElementById("address").value;
+            var phoneNumber = document.getElementById("phoneNumber").value;
+            var className = document.getElementById("className").value;
+            if(name == "" || address == "" || phoneNumber == "" || className == ""){
+                alert("Nhập thiếu hoặc nhập sai! vui lòng kiểm tra lại")
+                return 0;
+            }
+            document.getElementById("output").innerHTML += "<tr>" +
+                "<td><input type='checkbox' name='check' id='check' value='count'></td>" +
+                "<td>" + name + "</td>" +
+                "<td>" + address + "</td>" +
+                "<td>" + phoneNumber + "</td>" +
+                "<td>" + className + "</td>" +
+                "</tr>";
+            var tmp = {
+                "name": name,
+                "address": address,
+                "phoneNumber": phoneNumber,
+                "className": className
+            }
+            list.push(tmp);
+        }
+        function choice() {
+            var checkbox = document.getElementById('check');
+            var result = [];
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked === true) {
+                    result += checkbox[i].value + ",";
+                }
+            }
+            console.log(result);
+        }
+        function deleteInfo(choice) {
+            for(var j=0; j<result.length;j++){
+                list.splice(result[i],1);
+            }
+            show;
+        }
+        function show(){
+            document.getElementById("output").innerHTML = '';
+            for(var i=0; i < list.length; i++){
+                document.getElementById("output").innerHTML += "<tr>" +
+                "<td><input type='checkbox' name='check' id='check' value='count'></td>" +
+                "<td>" + list[i].name + "</td>" +
+                "<td>" + list[i].address + "</td>" +
+                "<td>" + list[i].phoneNumber + "</td>" +
+                "<td>" + list[i].className + "</td>" +
+                "</tr>";
+            }
+        }
+    </script>
 </body>
 
 </html>
