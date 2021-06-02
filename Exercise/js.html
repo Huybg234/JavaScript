@@ -6,19 +6,37 @@
 </head>
 
 <body>
-    <form style="background-color: rgb(208, 211, 211); border: 2px solid black; width: 15%; margin: auto; ">
-        <label>Họ và tên </label><br>
-        <input type="text" name="name" id="name" required><br>
-        <label>Địa chỉ </label><br>
-        <input type="text" name="address" id="address" required><br>
-        <label>Số điện thoại</label><br>
-        <input type="text" name="phoneNumber" id="phoneNumber" pattern="[0-9]{10}" required><br>
-        <label>Tên lớp</label><br>
-        <input type="text" name="className" id="className" required><br>
-        <button type="button" onclick="addInfo()">Submit</button>
+    <form>
+        <div class="form-group">
+            <label>Họ và tên </label>
+            <br />
+            <input type="text" name="name" id="name" required />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>Địa chỉ </label>
+            <br />
+            <input type="text" name="address" id="address" required />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>Số điện thoại</label>
+            <br />
+            <input type="text" name="phoneNumber" id="phoneNumber" pattern="[0-9]{10}" required />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>Tên lớp</label>
+            <br />
+            <input type="text" name="className" id="className" required>
+            <br />
+        </div>
+        <div class="form-group">
+            <button type="button" onclick="addInfo()">Submit</button>
+        </div>
     </form>
     <button type="button" onclick="deleteInfo()">Delete</button>
-    <button type="button" onclick="resetInfo()">Reset</button>
+    <button type="button" onclick="editInfo()">Edit</button>
     <table id="table">
         <thead>
             <tr>
@@ -32,61 +50,84 @@
         <tbody id="output"></tbody>
     </table>
     <script>
-        var count = 0;
+
+        var choice = [];
+        var list = [];
+
+
         function addInfo() {
-            count += 1;
-            var list = [];
             var name = document.getElementById("name").value;
             var address = document.getElementById("address").value;
             var phoneNumber = document.getElementById("phoneNumber").value;
             var className = document.getElementById("className").value;
-            if(name == "" || address == "" || phoneNumber == "" || className == ""){
+            if (name == "" || address == "" || phoneNumber == "" || className == "") {
                 alert("Nhập thiếu hoặc nhập sai! vui lòng kiểm tra lại")
                 return 0;
             }
-            document.getElementById("output").innerHTML += "<tr>" +
-                "<td><input type='checkbox' name='check' id='check' value='count'></td>" +
-                "<td>" + name + "</td>" +
-                "<td>" + address + "</td>" +
-                "<td>" + phoneNumber + "</td>" +
-                "<td>" + className + "</td>" +
-                "</tr>";
             var tmp = {
+                "id": list.length == 0 ? 0 : list[list.length - 1].id + 1,
                 "name": name,
                 "address": address,
                 "phoneNumber": phoneNumber,
                 "className": className
             }
             list.push(tmp);
+            show();
+            clearForm();
         }
-        function choice() {
-            var checkbox = document.getElementById('check');
-            var result = [];
-            for (var i = 0; i < checkbox.length; i++) {
-                if (checkbox[i].checked === true) {
-                    result += checkbox[i].value + ",";
-                }
+
+        function editInfo() {
+            if (choice.length > 1) {
+                alert("Chỉ được sửa 1 sinh viên 1 lúc.");
+                return;
             }
-            console.log(result);
-        }
-        function deleteInfo(choice) {
-            for(var j=0; j<result.length;j++){
-                list.splice(result[i],1);
+
+            if (choice.length == 0) {
+                alert("Chọn sinh viên cần sửa thông tin");
+                return;
             }
-            show;
         }
-        function show(){
+
+        function doCheck(checkbox) {
+            choice.push(checkbox.value);
+        }
+
+        function deleteInfo() {
+            for (var i = 0; i < choice.length; i++) {
+                var index = searchById(choice[i]);
+                list.splice(index, 1);
+                choice.splice(i, 1);
+            }
+            show();
+        }
+
+        function searchById(id) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].id == id) return i;
+            }
+            return -1;
+        }
+
+        function show() {
             document.getElementById("output").innerHTML = '';
-            for(var i=0; i < list.length; i++){
+            for (var i = 0; i < list.length; i++) {
                 document.getElementById("output").innerHTML += "<tr>" +
-                "<td><input type='checkbox' name='check' id='check' value='count'></td>" +
-                "<td>" + list[i].name + "</td>" +
-                "<td>" + list[i].address + "</td>" +
-                "<td>" + list[i].phoneNumber + "</td>" +
-                "<td>" + list[i].className + "</td>" +
-                "</tr>";
+                    "<td><input type='checkbox' name='check' id='check-" + list[i].id + "' value='" + list[i].id + "' onchange='doCheck(this)'></td>" +
+                    "<td>" + list[i].name + "</td>" +
+                    "<td>" + list[i].address + "</td>" +
+                    "<td>" + list[i].phoneNumber + "</td>" +
+                    "<td>" + list[i].className + "</td>" +
+                    "</tr>";
             }
         }
+
+        function clearForm() {
+            document.getElementById("name").value = "";
+            document.getElementById("address").value = "";
+            document.getElementById("phoneNumber").value = "";
+            document.getElementById("className").value = "";
+        }
+
     </script>
 </body>
 
