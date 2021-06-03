@@ -32,7 +32,7 @@
             <br />
         </div>
         <div class="form-group">
-            <button id="update" type="button" onclick="addInfo()">Submit</button>
+            <button id="update" type="button" onclick="addInfo()">Save</button>
         </div>
     </form>
     <button type="button" onclick="deleteInfo()">Delete</button>
@@ -50,9 +50,10 @@
         <tbody id="output"></tbody>
     </table>
     <script>
-
         var choice = [];
         var list = [];
+        let isEdit = false;
+        let editIndex = -1;
 
         function addInfo() {
             var name = document.getElementById("name").value;
@@ -60,9 +61,18 @@
             var phoneNumber = document.getElementById("phoneNumber").value;
             var className = document.getElementById("className").value;
             if (name == "" || address == "" || phoneNumber == "" || className == "") {
-                alert("Nhập thiếu hoặc nhập sai! vui lòng kiểm tra lại")
+                alert("Nhập thiếu hoặc nhập sai! vui lòng kiểm tra lại");
                 return 0;
             }
+
+            if (isEdit) {
+                doUpdateInfo(name, address, phoneNumber, className);
+                clearForm();
+                show();
+                isEdit = false;
+                return;
+            }
+
             var tmp = {
                 "id": list.length == 0 ? 0 : list[list.length - 1].id + 1,
                 "name": name,
@@ -70,25 +80,11 @@
                 "phoneNumber": phoneNumber,
                 "className": className
             }
-            if (currentIndex = -1) {
-                list.push(tmp);
-                show();
-                clearForm();
-            }
-            else {
-                list[currentIndex] = {
-                    name,
-                    address,
-                    phoneNumber,
-                    className,
-                }
-                currentIndex = -1;
-                document.getElementById('update').innerHTML = "Submit";
-                show();
-            }
+            list.push(tmp);
+            show();
+            clearForm();
         }
 
-        var currentIndex = -1;
         function editInfo() {
             if (choice.length > 1) {
                 alert("Chỉ được sửa 1 sinh viên 1 lúc.");
@@ -99,32 +95,41 @@
                 alert("Chọn sinh viên cần sửa thông tin");
                 return;
             }
-            for (var i = 0; i < choice.length; i++) {
-                var index = searchById(choice[i]);
-                document.getElementById('name').value = list[index].name;
-                document.getElementById('address').value = list[index].address;
-                document.getElementById('phoneNumber').value = list[index].phoneNumber;
-                document.getElementById('className').value = list[index].className;
-            }
-            currentIndex = index;
-            document.getElementById('update').innerHTML = "Reset";
-            return choice = [];
+            editIndex = searchIndexById(choice[0]);
+            document.getElementById('name').value = list[editIndex].name;
+            document.getElementById('address').value = list[editIndex].address;
+            document.getElementById('phoneNumber').value = list[editIndex].phoneNumber;
+            document.getElementById('className').value = list[editIndex].className;
+
+            isEdit = true;
+            choice = [];
         }
 
         function doCheck(checkbox) {
-            choice.push(checkbox.value);
+            if (checkbox.checked) {
+                choice.push(checkbox.value);
+                return;
+            }
+            let tempIndex = -1;
+            for (let i = 0; i < choice.length; i++) {
+                if (choice[i] == checkbox.value) {
+                    tempIndex = i;
+                    break;
+                }
+            }
+            choice.splice(tempIndex, 1);
         }
 
         function deleteInfo() {
             for (var i = 0; i < choice.length; i++) {
-                var index = searchById(choice[i]);
+                var index = searchIndexById(choice[i]);
                 list.splice(index, 1);
                 choice.splice(i, 1);
             }
             show();
         }
 
-        function searchById(id) {
+        function searchIndexById(id) {
             for (var i = 0; i < list.length; i++) {
                 if (list[i].id == id) return i;
             }
@@ -149,6 +154,14 @@
             document.getElementById("address").value = "";
             document.getElementById("phoneNumber").value = "";
             document.getElementById("className").value = "";
+        }
+
+        function doUpdateInfo(name, address, phoneNumber, className) {
+            list[editIndex].name = name;
+            list[editIndex].address = address;
+            list[editIndex].phoneNumber = phoneNumber;
+            list[editIndex].className = className;
+            editIndex = -1;
         }
 
     </script>
