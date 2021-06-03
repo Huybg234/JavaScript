@@ -32,7 +32,7 @@
             <br />
         </div>
         <div class="form-group">
-            <button type="button" onclick="addInfo()">Submit</button>
+            <button id="update" type="button" onclick="addInfo()">Submit</button>
         </div>
     </form>
     <button type="button" onclick="deleteInfo()">Delete</button>
@@ -54,7 +54,6 @@
         var choice = [];
         var list = [];
 
-
         function addInfo() {
             var name = document.getElementById("name").value;
             var address = document.getElementById("address").value;
@@ -71,11 +70,25 @@
                 "phoneNumber": phoneNumber,
                 "className": className
             }
-            list.push(tmp);
-            show();
-            clearForm();
+            if (currentIndex = -1) {
+                list.push(tmp);
+                show();
+                clearForm();
+            }
+            else {
+                list[currentIndex] = {
+                    name,
+                    address,
+                    phoneNumber,
+                    className,
+                }
+                currentIndex = -1;
+                document.getElementById('update').innerHTML = "Submit";
+                show();
+            }
         }
 
+        var currentIndex = -1;
         function editInfo() {
             if (choice.length > 1) {
                 alert("Chỉ được sửa 1 sinh viên 1 lúc.");
@@ -86,6 +99,16 @@
                 alert("Chọn sinh viên cần sửa thông tin");
                 return;
             }
+            for (var i = 0; i < choice.length; i++) {
+                var index = searchById(choice[i]);
+                document.getElementById('name').value = list[index].name;
+                document.getElementById('address').value = list[index].address;
+                document.getElementById('phoneNumber').value = list[index].phoneNumber;
+                document.getElementById('className').value = list[index].className;
+            }
+            currentIndex = index;
+            document.getElementById('update').innerHTML = "Reset";
+            return choice = [];
         }
 
         function doCheck(checkbox) {
